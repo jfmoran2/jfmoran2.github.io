@@ -40,7 +40,7 @@
 <script>
 
 async function init() {
-  d3.csv("http://localhost:8000/EmissionsData.csv").then(function(data) {
+  d3.csv("http://jfmoran2.github.io/EmissionsData.csv").then(function(data) {
  
   data.forEach(function(d) {
     d.Year = +d.Year
@@ -93,22 +93,6 @@ var height = 500;
             //.tickValues([10,20,50,100])
            // .tickFormat(d3.format("~s"))
             );
-/*
-  svg.append("line")
-        .attr(
-        {
-            "class":"horizontalGrid",
-            "x1" : 0,
-            "x2" : width,
-            "y1" : y(0),
-            "y2" : y(0),
-            "fill" : "none",
-            "shape-rendering" : "crispEdges",
-            "stroke" : "black",
-            "stroke-width" : "1px",
-            "stroke-dasharray": ("3, 3")
-        });
-*/
 
 var ChinaLine = d3.line()
     .x(function(d) { return x(d.Year); })
@@ -118,23 +102,12 @@ var USALine = d3.line()
     .x(function(d) { return x(d.Year); })
     .y(function(d) { return y(d.USA_TotKTon); });
 
-/*
-svg.append("path")
-      .data([data])
-      .attr("class", "line")
-      .attr("d", ChinaLine)
-      .transition()
-      .duration(5000);
 
-svg.append("path")
-      .data([data])
-      .attr("class", "line")
-      .attr("d", USALine);
-*/
 var path1 = svg.append("path")
       .data([data])
       .attr("class", "line")
-      .attr("d", ChinaLine);
+      .attr("d", ChinaLine)
+      .style("stroke", "red");
 
 var path2 = svg.append("path")
       .data([data])
@@ -159,37 +132,6 @@ path2.attr("stroke-dasharray", totalLength2 + " " + totalLength2)
     .ease(d3.easeLinear)
     .attr("stroke-dashoffset", 0);
 
-//console.log(totalLength);
-
-/*
-d3.select('svg')
-.attr("width", width + 2*margin)
-.attr("height", height + 2*margin)
-.append('g')
-.attr("transform", "translate("+margin + "," + margin + ")")
-.selectAll()
-    .data(data)
-    .enter()
-    .append("circle")
-    .attr('cx', function(d) {return xScale(d.AverageCityMPG);})
-    .attr('cy', function(d) {return  yScale(d.AverageHighwayMPG)})  
-    .attr('r', function(d) {return d.EngineCylinders})  
-
-d3.select("svg").append('g')
-   .attr("transform", "translate("+margin + "," + margin + ")")
-    .call(d3.axisLeft(yScale)
-            .tickValues([10,20,50,100])
-            .tickFormat(d3.format("~s")));
-
-d3.select("svg").append('g')
-   .attr("transform", "translate("+margin + "," + (height + margin) + ")")
-    .call(d3.axisBottom(xScale)
-            .tickValues([10,20,50,100])
-            .tickFormat(d3.format("~s")));
-*/
-console.log(data[0]);
-console.log(data[0].Year);
-console.log(data[0].USA_PerCapMTon);
 });
 }
 </script>
