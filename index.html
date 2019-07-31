@@ -39,6 +39,7 @@
 <div id="viz">
   <button id="chart1"> Chart1 </button>
   <button id="chart2"> Chart2 </button>
+  <button id="chart3"> Chart3 </button>
 </div>
 
 <script>
@@ -61,14 +62,8 @@ var height = 500;
 var x = d3.scaleLinear().range([0,width]);
 var y = d3.scaleLinear().range([height,0]);
 
+// define svg outside of all functions
 var svg;
-/*
-var svg = d3.select("body").append("svg")
-    .attr("width", width + 2*margin)
-    .attr("height", height + 2*margin)
-    .append("g")
-    .attr("transform", "translate("+ margin + "," + margin + ")");
-*/
 
 function chart1() {
 
@@ -146,7 +141,6 @@ path2.attr("stroke-dasharray", totalLength2 + " " + totalLength2)
 
 function chart2() {
   
-
    svg = d3.select("body").append("svg")
     .attr("width", width + 2*margin)
     .attr("height", height + 2*margin)
@@ -220,6 +214,41 @@ path2.attr("stroke-dasharray", totalLength2 + " " + totalLength2)
 
 }
 
+function chart3() {
+  svg = d3.select("body").append("svg")
+    .attr("width", width + 2*margin)
+    .attr("height", height + 2*margin)
+    .append("g")
+    .attr("transform", "translate("+ margin + "," + margin + ")");
+
+  var minYear = d3.min(data, function(d) { return d.Year; });
+  var maxYear = d3.max(data, function(d) { return d.Year; });
+  var minChinaTotal = d3.min(data, function(d) { return d.China_PerCapMTon; });
+  var maxChinaTotal = d3.max(data, function(d) { return d.China_PerCapMTon; });
+  var minUSATotal = d3.min(data, function(d) { return d.USA_PerCapMTon; });
+  var maxUSATotal = d3.max(data, function(d) { return d.USA_PerCapMTon; });
+
+  var minY = d3.min([minChinaTotal, minUSATotal]); 
+  var maxY = d3.max([maxChinaTotal, maxUSATotal]);
+
+  x.domain([minYear, maxYear]);
+  y.domain([minY, maxY]);
+  
+  d3.select("svg").append('g')
+    .attr("transform", "translate("+margin + "," + (height + margin) + ")")
+    .call(d3.axisBottom(x)
+       //     .tickValues([10,20,50,100])
+           .tickFormat(d3.format("d"))
+       );
+
+  d3.select("svg").append('g')
+    .attr("transform", "translate("+margin + "," + margin + ")")
+    .call(d3.axisLeft(y)
+            //.tickValues([10,20,50,100])
+           // .tickFormat(d3.format("~s"))
+            );
+}
+
 function reload_chart1() {
   d3.select("svg").remove();
   chart1();
@@ -230,24 +259,17 @@ function reload_chart2() {
   chart2();
 }
 
+function reload_chart3() {
+  d3.select("svg").remove();
+  chart3();
+}
+
+// START MAIN EXECUTION BRANCH ALL FUNCTIONS DEFINED ABOVE
 chart1();
 
 d3.select("#chart1").on("click", reload_chart1);
 d3.select("#chart2").on("click", reload_chart2);
-
-
-// TESTING CLEARING AND REDISPLAYING USING TIMEOUT
-/*
-    setTimeout(function () {
-    
-    d3.select("svg").remove();
-
-    // rescale y as log
-    //y = d3.scaleLog().range([height,0]);
-    chart2();
-    
-}, 10000);
-*/
+d3.select("#chart3").on("click", reload_chart3);
 
 });
 // }
