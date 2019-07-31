@@ -1,0 +1,91 @@
+<html>
+<script src='https://d3js.org/d3.v5.min.js'></script>
+<!-- <style> circle {fill: lightblue; stroke: black;} </style> --> 
+<style>
+
+    body {
+      font: 12px Helvetica;
+    }
+    
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+    
+    .x.axis path {
+      display: none;
+    }
+    
+    .line {
+      fill: none;
+      stroke: steelblue;
+      stroke-width: 2px;
+    }
+    
+</style>
+<head>
+  <title>Bootstrap LOVEPIG LOOK UP HERE Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body onload='init()'>
+
+<div class="container">
+<!-- <svg width=800 height=800> -->
+</svg>
+<script>
+
+async function init() {
+  d3.csv("http://localhost:8000/EmissionsData.csv").then(function(data) {
+ 
+  data.forEach(function(d) {
+    d.Year = +d.Year
+    d.China_PerCapMTon = +d.China_PerCapMTon;
+    d.USA_PerCapMTon = +d.USA_PerCapMTon;
+    d.China_TotKTon = +d.China_TotKTon;
+    d.USA_TotKTon = +d.USA_TotKTon;
+ });
+
+var margin = 50;
+var width = 700;
+var height = 700;
+var xScale = d3.scaleLog().domain([10,150]).range([0,width]);
+var yScale = d3.scaleLog().domain([10,150]).range([height,0]);
+/*
+d3.select('svg')
+.attr("width", width + 2*margin)
+.attr("height", height + 2*margin)
+.append('g')
+.attr("transform", "translate("+margin + "," + margin + ")")
+.selectAll()
+    .data(data)
+    .enter()
+    .append("circle")
+    .attr('cx', function(d) {return xScale(d.AverageCityMPG);})
+    .attr('cy', function(d) {return  yScale(d.AverageHighwayMPG)})  
+    .attr('r', function(d) {return d.EngineCylinders})  
+
+d3.select("svg").append('g')
+   .attr("transform", "translate("+margin + "," + margin + ")")
+    .call(d3.axisLeft(yScale)
+            .tickValues([10,20,50,100])
+            .tickFormat(d3.format("~s")));
+
+d3.select("svg").append('g')
+   .attr("transform", "translate("+margin + "," + (height + margin) + ")")
+    .call(d3.axisBottom(xScale)
+            .tickValues([10,20,50,100])
+            .tickFormat(d3.format("~s")));
+*/
+console.log(data[0]);
+console.log(data[0].Year);
+console.log(data[0].USA_PerCapMTon);
+});
+}
+</script>
+</body>
+</html>

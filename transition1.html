@@ -1,0 +1,45 @@
+<html>
+<script src='https://d3js.org/d3.v5.min.js'></script>
+<!-- <style> circle {fill: lightblue; stroke: black;} </style> --> 
+<head>
+  <title>Bootstrap LOVEPIG LOOK UP HERE Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body onload='init()'>
+
+<div class="container">
+<svg width=800 height=800>
+</svg>
+<script>
+
+async function init() {
+console.log("Hello World")
+const data = [1, 2, 3];
+let circles = d3.select('svg').selectAll('circle').data(data);
+
+let circles_enter = circles.enter().append('circle')
+  .attr('r', 10)
+  .attr('cx', 100)
+  .attr('cy', 100); // useful default values for animation
+
+circles.merge(circles_enter)
+  .transition()
+  .duration(1000) // duration of the animation
+  .delay(200) // delay animation start
+  .attr('cx', (d, i) => d * 50)
+  .attr('cy', (d, i) => 40 + i *100)
+    .transition() // start another transition after the first one ended
+    .attr('r', 20);
+
+circles.exit().remove();
+}
+
+</script>
+
+</div>
+</body>
+</html>

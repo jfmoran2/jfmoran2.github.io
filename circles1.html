@@ -1,0 +1,50 @@
+<html>
+<script src='https://d3js.org/d3.v5.min.js'></script>
+<!-- <style> circle {fill: lightblue; stroke: black;} </style> --> 
+
+<head>
+  <title>Bootstrap LOVEPIG LOOK UP HERE Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body onload='init()'>
+
+<div class="container">
+<!-- <svg width=800 height=800> -->
+</svg>
+<script>
+
+async function init() {
+console.log("Hello World")
+circleRadii = [40, 20, 10]
+ 
+ var svgContainer = d3.select("body").append("svg")
+                                     .attr("width", 600)
+                                     .attr("height", 600);
+ 
+ var circles = svgContainer.selectAll("circle")
+                           .data(circleRadii)
+                           .enter()
+                          .append("circle")
+
+var circleAttributes = circles
+                       .attr("cx", 250)
+                       .attr("cy", 250)
+                       .attr("r", function (d) { return d; })
+                       .style("fill", function(d) {
+                         var returnColor;
+                         if (d === 40) { returnColor = "green";
+                         } else if (d === 20) { returnColor = "purple";
+                         } else if (d === 10) { returnColor = "red"; }
+                         return returnColor;
+                       });
+}
+
+</script>
+
+</div>
+</body>
+</html>
