@@ -50,11 +50,37 @@ async function init() {
     d.USA_TotKTon = +d.USA_TotKTon;
  });
 
-var margin = 50;
-var width = 700;
-var height = 700;
-var xScale = d3.scaleLog().domain([10,150]).range([0,width]);
-var yScale = d3.scaleLog().domain([10,150]).range([height,0]);
+ var margin = {top: 20, right: 50, bottom: 30, left: 50},
+    width = 630 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+ 
+  var x = d3.scaleLinear().range([0,width]);
+  var y = d3.scaleLinear().range([height,0]);
+
+  // extent uses min/max of entire Year range
+  x.domain(d3.extent(data, function(d) { return d.Year; }));
+
+  var minYear = d3.min(data, function(d) { return d.Year; });
+  var maxYear = d3.max(data, function(d) { return d.Year; });
+  var minChinaTotal = d3.min(data, function(d) { return d.China_TotKTon; });
+  var maxChinaTotal = d3.max(data, function(d) { return d.China_TotKTon; });
+  var minUSATotal = d3.min(data, function(d) { return d.USA_TotKTon; });
+  var maxUSATotal = d3.max(data, function(d) { return d.USA_TotKTon; });
+
+  var minY = d3.min([minChinaTotal, minUSATotal]); 
+  var maxY = d3.max([maxChinaTotal, maxUSATotal]);
+
+/*
+  console.log(minYear);
+  console.log(maxYear);
+  console.log(minChinaTotal);
+  console.log(maxChinaTotal);
+  console.log(minUSATotal);
+  console.log(maxUSATotal);
+  console.log(minY);
+  console.log(maxY);
+  */
+  
 /*
 d3.select('svg')
 .attr("width", width + 2*margin)
