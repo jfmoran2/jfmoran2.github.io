@@ -93,18 +93,73 @@ var height = 500;
             //.tickValues([10,20,50,100])
            // .tickFormat(d3.format("~s"))
             );
+/*
+  svg.append("line")
+        .attr(
+        {
+            "class":"horizontalGrid",
+            "x1" : 0,
+            "x2" : width,
+            "y1" : y(0),
+            "y2" : y(0),
+            "fill" : "none",
+            "shape-rendering" : "crispEdges",
+            "stroke" : "black",
+            "stroke-width" : "1px",
+            "stroke-dasharray": ("3, 3")
+        });
+*/
 
+var ChinaLine = d3.line()
+    .x(function(d) { return x(d.Year); })
+    .y(function(d) { return y(d.China_TotKTon); });
+
+var USALine = d3.line()
+    .x(function(d) { return x(d.Year); })
+    .y(function(d) { return y(d.USA_TotKTon); });
 
 /*
-  console.log(minYear);
-  console.log(maxYear);
-  console.log(minChinaTotal);
-  console.log(maxChinaTotal);
-  console.log(minUSATotal);
-  console.log(maxUSATotal);
-  console.log(minY);
-  console.log(maxY);
-  */
+svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .attr("d", ChinaLine)
+      .transition()
+      .duration(5000);
+
+svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .attr("d", USALine);
+*/
+var path1 = svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .attr("d", ChinaLine);
+
+var path2 = svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .attr("d", USALine);
+
+var totalLength1 = path1.node().getTotalLength();
+
+path1.attr("stroke-dasharray", totalLength1 + " " + totalLength1)
+    .attr("stroke-dashoffset", totalLength1)
+    .transition()
+    .duration(4000)
+    .ease(d3.easeLinear)
+    .attr("stroke-dashoffset", 0);
+
+var totalLength2 = path2.node().getTotalLength();
+
+path2.attr("stroke-dasharray", totalLength2 + " " + totalLength2)
+    .attr("stroke-dashoffset", totalLength2)
+    .transition()
+    .duration(4000)
+    .ease(d3.easeLinear)
+    .attr("stroke-dashoffset", 0);
+
+//console.log(totalLength);
 
 /*
 d3.select('svg')
