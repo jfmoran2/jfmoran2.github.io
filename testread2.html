@@ -50,12 +50,19 @@ async function init() {
     d.USA_TotKTon = +d.USA_TotKTon;
  });
 
- var margin = {top: 20, right: 50, bottom: 30, left: 50},
-    width = 630 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
- 
+var margin = 100;
+var width = 700;
+var height = 500;
+  
   var x = d3.scaleLinear().range([0,width]);
   var y = d3.scaleLinear().range([height,0]);
+
+
+    var svg = d3.select("body").append("svg")
+    .attr("width", width + 2*margin)
+    .attr("height", height + 2*margin)
+    .append("g")
+    .attr("transform", "translate("+ margin + "," + margin + ")");
 
   // extent uses min/max of entire Year range
   x.domain(d3.extent(data, function(d) { return d.Year; }));
@@ -70,6 +77,24 @@ async function init() {
   var minY = d3.min([minChinaTotal, minUSATotal]); 
   var maxY = d3.max([maxChinaTotal, maxUSATotal]);
 
+  x.domain([minYear, maxYear]);
+  y.domain([minY, maxY]);
+  
+  d3.select("svg").append('g')
+    .attr("transform", "translate("+margin + "," + (height + margin) + ")")
+    .call(d3.axisBottom(x)
+       //     .tickValues([10,20,50,100])
+           .tickFormat(d3.format("d"))
+       );
+
+  d3.select("svg").append('g')
+    .attr("transform", "translate("+margin + "," + margin + ")")
+    .call(d3.axisLeft(y)
+            //.tickValues([10,20,50,100])
+           // .tickFormat(d3.format("~s"))
+            );
+
+
 /*
   console.log(minYear);
   console.log(maxYear);
@@ -80,7 +105,7 @@ async function init() {
   console.log(minY);
   console.log(maxY);
   */
-  
+
 /*
 d3.select('svg')
 .attr("width", width + 2*margin)
