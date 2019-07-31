@@ -221,15 +221,22 @@ function chart3() {
     .append("g")
     .attr("transform", "translate("+ margin + "," + margin + ")");
 
-  var minYear = d3.min(data, function(d) { return d.Year; });
-  var maxYear = d3.max(data, function(d) { return d.Year; });
-  var minChinaTotal = d3.min(data, function(d) { return d.China_PerCapMTon; });
-  var maxChinaTotal = d3.max(data, function(d) { return d.China_PerCapMTon; });
-  var minUSATotal = d3.min(data, function(d) { return d.USA_PerCapMTon; });
-  var maxUSATotal = d3.max(data, function(d) { return d.USA_PerCapMTon; });
+    PerCapitaRatio = [];
+    for (var i = 0; i < data.length; i++){
+      console.log("china: " + data[i].China_PerCapMTon);
+      console.log("USA: " + data[i].USA_PerCapMTon);
+      PerCapitaRatio.push({Year: data[i].Year, Ratio: data[i].China_PerCapMTon/data[i].USA_PerCapMTon});
+    }
 
-  var minY = d3.min([minChinaTotal, minUSATotal]); 
-  var maxY = d3.max([maxChinaTotal, maxUSATotal]);
+    console.log("size: " + PerCapitaRatio.length);
+    console.log("first: " + PerCapitaRatio[0].Ratio);
+    console.log("last: " + PerCapitaRatio[PerCapitaRatio.length-1].Ratio);
+
+    var minYear = d3.min(PerCapitaRatio, function(d) {return d.Year});
+    var maxYear = d3.max(PerCapitaRatio, function(d) {return d.Year});
+
+    var minY = d3.min(PerCapitaRatio, function(d) {return d.Ratio});
+    var maxY = d3.max(PerCapitaRatio, function(d) {return d.Ratio});
 
   x.domain([minYear, maxYear]);
   y.domain([minY, maxY]);
@@ -247,6 +254,26 @@ function chart3() {
             //.tickValues([10,20,50,100])
            // .tickFormat(d3.format("~s"))
             );
+    
+    var RatioLine = d3.line()
+    .x(function(d) { return x(d.Year); })
+    .y(function(d) { return y(d.Ratio); });
+
+    var path1 = svg.append("path")
+      .data([PerCapitaRatio])
+      .attr("class", "line")
+      .attr("d", RatioLine)
+      .style("stroke", "green");
+
+    var totalLength1 = path1.node().getTotalLength();
+
+    path1.attr("stroke-dasharray", totalLength1 + " " + totalLength1)
+    .attr("stroke-dashoffset", totalLength1)
+    .transition()
+    .duration(4000)
+    .ease(d3.easeLinear)
+    .attr("stroke-dashoffset", 0);
+
 }
 
 function reload_chart1() {
