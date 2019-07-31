@@ -37,9 +37,10 @@
 <div class="container">
 <!-- <svg width=800 height=800> -->
 </svg>
+
 <script>
 
-async function init() {
+ function init() {
   d3.csv("https://jfmoran2.github.io/EmissionsData.csv").then(function(data) {
  
   data.forEach(function(d) {
@@ -54,19 +55,16 @@ var margin = 100;
 var width = 700;
 var height = 500;
   
-  var x = d3.scaleLinear().range([0,width]);
-  var y = d3.scaleLinear().range([height,0]);
+var x = d3.scaleLinear().range([0,width]);
+var y = d3.scaleLinear().range([height,0]);
 
-
-    var svg = d3.select("body").append("svg")
+var svg = d3.select("body").append("svg")
     .attr("width", width + 2*margin)
     .attr("height", height + 2*margin)
     .append("g")
     .attr("transform", "translate("+ margin + "," + margin + ")");
 
-  // extent uses min/max of entire Year range
-  x.domain(d3.extent(data, function(d) { return d.Year; }));
-
+function chart1() {
   var minYear = d3.min(data, function(d) { return d.Year; });
   var maxYear = d3.max(data, function(d) { return d.Year; });
   var minChinaTotal = d3.min(data, function(d) { return d.China_TotKTon; });
@@ -131,9 +129,104 @@ path2.attr("stroke-dasharray", totalLength2 + " " + totalLength2)
     .duration(4000)
     .ease(d3.easeLinear)
     .attr("stroke-dashoffset", 0);
+}
+
+function chart2() {
+   svg = d3.select("body").append("svg")
+    .attr("width", width + 2*margin)
+    .attr("height", height + 2*margin)
+    .append("g")
+    .attr("transform", "translate("+ margin + "," + margin + ")");
+
+  var minYear = d3.min(data, function(d) { return d.Year; });
+  var maxYear = d3.max(data, function(d) { return d.Year; });
+  var minChinaTotal = d3.min(data, function(d) { return d.China_PerCapMTon; });
+  var maxChinaTotal = d3.max(data, function(d) { return d.China_PerCapMTon; });
+  var minUSATotal = d3.min(data, function(d) { return d.USA_PerCapMTon; });
+  var maxUSATotal = d3.max(data, function(d) { return d.USA_PerCapMTon; });
+
+  var minY = d3.min([minChinaTotal, minUSATotal]); 
+  var maxY = d3.max([maxChinaTotal, maxUSATotal]);
+
+  x.domain([minYear, maxYear]);
+  y.domain([minY, maxY]);
+  
+  d3.select("svg").append('g')
+    .attr("transform", "translate("+margin + "," + (height + margin) + ")")
+    .call(d3.axisBottom(x)
+       //     .tickValues([10,20,50,100])
+           .tickFormat(d3.format("d"))
+       );
+
+  d3.select("svg").append('g')
+    .attr("transform", "translate("+margin + "," + margin + ")")
+    .call(d3.axisLeft(y)
+            //.tickValues([10,20,50,100])
+           // .tickFormat(d3.format("~s"))
+            );
+
+var ChinaLine = d3.line()
+    .x(function(d) { return x(d.Year); })
+    .y(function(d) { return y(d.China_PerCapMTon); });
+
+var USALine = d3.line()
+    .x(function(d) { return x(d.Year); })
+    .y(function(d) { return y(d.USA_PerCapMTon); });
+
+
+var path1 = svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .attr("d", ChinaLine)
+      .style("stroke", "red");
+
+var path2 = svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .attr("d", USALine);
+
+var totalLength1 = path1.node().getTotalLength();
+
+path1.attr("stroke-dasharray", totalLength1 + " " + totalLength1)
+    .attr("stroke-dashoffset", totalLength1)
+    .transition()
+    .duration(4000)
+    .ease(d3.easeLinear)
+    .attr("stroke-dashoffset", 0);
+
+var totalLength2 = path2.node().getTotalLength();
+
+path2.attr("stroke-dasharray", totalLength2 + " " + totalLength2)
+    .attr("stroke-dashoffset", totalLength2)
+    .transition()
+    .duration(4000)
+    .ease(d3.easeLinear)
+    .attr("stroke-dashoffset", 0);
+
+}
+
+chart1();
+
+
+// TESTING CLEARING AND REDISPLAYING USING TIMEOUT
+
+    setTimeout(function () {
+    
+    d3.select("svg").remove();
+
+    // rescale y as log
+    //y = d3.scaleLog().range([height,0]);
+    chart2();
+    
+}, 10000);
+
 
 });
 }
 </script>
+
+<!-- <button type="button" onclick="chart2()">Chart2</button>
+-->
+
 </body>
 </html>
