@@ -32,15 +32,18 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
-<body onload='init()'>
-
+<!-- <body onload='init()'> -->
+<body>
 <div class="container">
-<!-- <svg width=800 height=800> -->
-</svg>
+
+<div id="viz">
+  <button id="chart1"> Chart1 </button>
+  <button id="chart2"> Chart2 </button>
+</div>
 
 <script>
 
- function init() {
+ // function init() {
   d3.csv("https://jfmoran2.github.io/EmissionsData.csv").then(function(data) {
  
   data.forEach(function(d) {
@@ -58,13 +61,23 @@ var height = 500;
 var x = d3.scaleLinear().range([0,width]);
 var y = d3.scaleLinear().range([height,0]);
 
+var svg;
+/*
 var svg = d3.select("body").append("svg")
     .attr("width", width + 2*margin)
     .attr("height", height + 2*margin)
     .append("g")
     .attr("transform", "translate("+ margin + "," + margin + ")");
+*/
 
 function chart1() {
+
+  svg = d3.select("body").append("svg")
+    .attr("width", width + 2*margin)
+    .attr("height", height + 2*margin)
+    .append("g")
+    .attr("transform", "translate("+ margin + "," + margin + ")");
+
   var minYear = d3.min(data, function(d) { return d.Year; });
   var maxYear = d3.max(data, function(d) { return d.Year; });
   var minChinaTotal = d3.min(data, function(d) { return d.China_TotKTon; });
@@ -132,6 +145,8 @@ path2.attr("stroke-dasharray", totalLength2 + " " + totalLength2)
 }
 
 function chart2() {
+  
+
    svg = d3.select("body").append("svg")
     .attr("width", width + 2*margin)
     .attr("height", height + 2*margin)
@@ -205,11 +220,24 @@ path2.attr("stroke-dasharray", totalLength2 + " " + totalLength2)
 
 }
 
+function reload_chart1() {
+  d3.select("svg").remove();
+  chart1();
+}
+
+function reload_chart2() {
+  d3.select("svg").remove();
+  chart2();
+}
+
 chart1();
+
+d3.select("#chart1").on("click", reload_chart1);
+d3.select("#chart2").on("click", reload_chart2);
 
 
 // TESTING CLEARING AND REDISPLAYING USING TIMEOUT
-
+/*
     setTimeout(function () {
     
     d3.select("svg").remove();
@@ -219,14 +247,11 @@ chart1();
     chart2();
     
 }, 10000);
-
+*/
 
 });
-}
+// }
 </script>
-
-<!-- <button type="button" onclick="chart2()">Chart2</button>
--->
 
 </body>
 </html>
