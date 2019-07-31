@@ -61,6 +61,7 @@ var height = 500;
   
 var x = d3.scaleLinear().range([0,width]);
 var y = d3.scaleLinear().range([height,0]);
+var delayMS = 3000;
 
 // define svg outside of all functions
 var svg;
@@ -125,7 +126,7 @@ var totalLength1 = path1.node().getTotalLength();
 path1.attr("stroke-dasharray", totalLength1 + " " + totalLength1)
     .attr("stroke-dashoffset", totalLength1)
     .transition()
-    .duration(4000)
+    .duration(delayMS)
     .ease(d3.easeLinear)
     .attr("stroke-dashoffset", 0);
 
@@ -134,7 +135,7 @@ var totalLength2 = path2.node().getTotalLength();
 path2.attr("stroke-dasharray", totalLength2 + " " + totalLength2)
     .attr("stroke-dashoffset", totalLength2)
     .transition()
-    .duration(4000)
+    .duration(delayMS)
     .ease(d3.easeLinear)
     .attr("stroke-dashoffset", 0);
 }
@@ -199,7 +200,7 @@ var totalLength1 = path1.node().getTotalLength();
 path1.attr("stroke-dasharray", totalLength1 + " " + totalLength1)
     .attr("stroke-dashoffset", totalLength1)
     .transition()
-    .duration(4000)
+    .duration(delayMS)
     .ease(d3.easeLinear)
     .attr("stroke-dashoffset", 0);
 
@@ -208,7 +209,7 @@ var totalLength2 = path2.node().getTotalLength();
 path2.attr("stroke-dasharray", totalLength2 + " " + totalLength2)
     .attr("stroke-dashoffset", totalLength2)
     .transition()
-    .duration(4000)
+    .duration(delayMS)
     .ease(d3.easeLinear)
     .attr("stroke-dashoffset", 0);
 
@@ -270,7 +271,7 @@ function chart3() {
     path1.attr("stroke-dasharray", totalLength1 + " " + totalLength1)
     .attr("stroke-dashoffset", totalLength1)
     .transition()
-    .duration(4000)
+    .duration(delayMS)
     .ease(d3.easeLinear)
     .attr("stroke-dashoffset", 0);
 
