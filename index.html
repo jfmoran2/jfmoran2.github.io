@@ -122,6 +122,15 @@ function chart1() {
     .append("g")
     .attr("transform", "translate("+ margin + "," + margin + ")");
 
+  // TITLE
+  svg.append("text")
+        .attr("x", (width / 2))             
+        .attr("y", 0 - (margin / 2))
+        .attr("text-anchor", "middle")  
+        .style("font-size", "16px") 
+        .style("font-weight", "bold")  
+        .text("CO2 Total Emissions in Kilotons (kt) China v. USA (1960-2011)");
+
   var minYear = d3.min(data, function(d) { return d.Year; });
   var maxYear = d3.max(data, function(d) { return d.Year; });
   var minChinaTotal = d3.min(data, function(d) { return d.China_TotKTon; });
