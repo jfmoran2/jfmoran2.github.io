@@ -42,7 +42,7 @@
       .tooltip-style1 {
         fill: lightgray;
         stroke: black;
-        opacity: 0.4;
+        opacity: 1;
     }
 
    
@@ -131,6 +131,50 @@ function chart1() {
         .style("font-weight", "bold")  
         .text("CO2 Total Emissions in Kilotons (kt) China v. USA (1960-2011)");
 
+  // LEGEND
+  var xlegend = 50;
+  var ylegend = 0;
+
+  svg.append("rect")
+      .attr("x", xlegend)
+      .attr("y", ylegend)
+      .attr("rx", 5)
+      .attr("ry", 5)
+      .attr("width", 90)
+      .attr("height", 50)
+      .style("fill", "none")
+      .style("stroke", "black");
+
+  svg.append("rect")
+    .attr("x", xlegend + 10)
+    .attr("y", ylegend + 12)
+    .attr("width", 20)
+    .attr("height", 5)
+    .style("fill", "red")
+
+  svg.append("text")
+    .attr("x", xlegend + 40)
+    .attr("y", ylegend + 18)
+    .text("China");
+
+    svg.append("rect")
+    .attr("x", xlegend + 10)
+    .attr("y", ylegend + 32)
+    .attr("width", 20)
+    .attr("height", 5)
+    .style("fill", "steelblue")
+
+    svg.append("text")
+    .attr("x", xlegend + 40)
+    .attr("y", ylegend + 39)
+    .text("USA");
+
+/*
+  svg.append("text")
+    .attr("x", xlegend + 40)
+    .attr("y", ylegend + 18)
+    .text("China");
+*/
   var minYear = d3.min(data, function(d) { return d.Year; });
   var maxYear = d3.max(data, function(d) { return d.Year; });
   var minChinaTotal = d3.min(data, function(d) { return d.China_TotKTon; });
