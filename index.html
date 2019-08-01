@@ -40,15 +40,12 @@
         pointer-events: all;
     }
       .tooltip-style1 {
-        fill: steelBlue;
+        fill: lightgray;
         stroke: black;
-        opacity: 0.3;
+        opacity: 0.4;
     }
 
-    .tooltip-year, .tooltip-data {
-        font-weight: bold;
-    }
-
+   
     .focus circle {
         fill: black;
     }
@@ -105,7 +102,8 @@
     d.USA_TotKTon = +d.USA_TotKTon;
  });
 
-var margin = 125;
+var margin = 100;
+var right_margin = 150;
 var width = 600;
 var height = 400;
   
@@ -119,7 +117,7 @@ var svg;
 function chart1() {
 
   svg = d3.select("body").append("svg")
-    .attr("width", width + 2*margin)
+    .attr("width", width + margin + right_margin)
     .attr("height", height + 2*margin)
     .append("g")
     .attr("transform", "translate("+ margin + "," + margin + ")");
@@ -185,8 +183,8 @@ var path2 = svg.append("path")
 
         focus.append("rect")
             .attr("class", "tooltip-style1")
-            .attr("width", 115)
-            .attr("height", 50)
+            .attr("width", 150)
+            .attr("height", 72)
             .attr("x", 10)
             .attr("y", -22)
             .attr("rx", 5)
@@ -195,22 +193,34 @@ var path2 = svg.append("path")
         focus.append("text")
             .attr("x", 18)
             .attr("y", -2)
-            .text("year: ");
+            .text("Year: ");
       
         focus.append("text")
             .attr("class", "tooltip-year")
-            .attr("x", 55)
+            .attr("x", 88)
             .attr("y", -2);
 
         focus.append("text")
             .attr("x", 18)
             .attr("y", 18)
-            .text("kt  :");
+            .style("stroke","red")
+            .text("China (kt):");
 
         focus.append("text")
-            .attr("class", "tooltip-data")
-            .attr("x", 55)
+            .attr("class", "tooltip-china-data")
+            .attr("x", 88)
             .attr("y", 18);
+
+        focus.append("text")
+            .attr("x", 18)
+            .attr("y", 38)
+            .style("stroke","steelblue")
+            .text("USA (kt):");
+
+        focus.append("text")
+            .attr("class", "tooltip-usa-data")
+            .attr("x", 88)
+            .attr("y", 38);
         
         focus.append("line")
           .attr("class", "tooltip-line")
@@ -238,7 +248,8 @@ var path2 = svg.append("path")
             // focus.attr("transform", "translate(" + x(d.Year) + "," + y(d.USA_TotKTon) + ")");
             focus.attr("transform", "translate(" + x(d.Year) + "," + 0 + ")");
             focus.select(".tooltip-year").text(formatYear(d.Year));
-            focus.select(".tooltip-data").text(formatData(d.USA_TotKTon));
+            focus.select(".tooltip-china-data").text(formatData(d.China_TotKTon));
+            focus.select(".tooltip-usa-data").text(formatData(d.USA_TotKTon));
         }
 
 // ANIMATION
