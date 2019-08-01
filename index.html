@@ -229,7 +229,7 @@ function chart1() {
       .attr("x",0 - (height + margin)/2 - 50)
       .attr("dy", "1em")
       .style("text-anchor", "middle")
-      .text("CO2 Total Emissions (kt)");         
+     .text("CO2 Total Emissions (kt)");         
 
 var ChinaLine = d3.line()
     .x(function(d) { return x(d.Year); })
@@ -587,19 +587,22 @@ function chart3() {
         .attr("text-anchor", "middle")  
         .style("font-size", "16px") 
         .style("font-weight", "bold")  
-        .text("Ratio CO2 Total Emissions in Kilotons (kt) China v. USA (1960-2011)");
+        .text("Ratio China/USA CO2 Per Capita Emissions (1960-2011)");
 
     PerCapitaRatio = [];
+
+
     for (var i = 0; i < data.length; i++){
       console.log("china: " + data[i].China_PerCapMTon);
       console.log("USA: " + data[i].USA_PerCapMTon);
       PerCapitaRatio.push({Year: data[i].Year, Ratio: data[i].China_PerCapMTon/data[i].USA_PerCapMTon});
     }
 
+/*
     console.log("size: " + PerCapitaRatio.length);
     console.log("first: " + PerCapitaRatio[0].Ratio);
     console.log("last: " + PerCapitaRatio[PerCapitaRatio.length-1].Ratio);
-
+*/
     var minYear = d3.min(PerCapitaRatio, function(d) {return d.Year});
     var maxYear = d3.max(PerCapitaRatio, function(d) {return d.Year});
 
@@ -616,13 +619,29 @@ function chart3() {
            .tickFormat(d3.format("d"))
        );
 
+// text label for the x axis
+d3.select("svg").append("text")             
+      .attr("transform",
+            "translate(" + ((width + margin + right_margin)/2) + " ," + 
+                           (height + margin + 50) + ")")
+      .style("text-anchor", "middle")
+      .text("Year");
+
   d3.select("svg").append('g')
     .attr("transform", "translate("+margin + "," + margin + ")")
     .call(d3.axisLeft(y)
             //.tickValues([10,20,50,100])
            // .tickFormat(d3.format("~s"))
             );
-    
+
+    d3.select("svg").append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin + right_margin)
+      .attr("x",0 - (height + margin)/2 - 50)
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Ratio China/USA CO2 Per Capita Emissions"); 
+
     var RatioLine = d3.line()
     .x(function(d) { return x(d.Year); })
     .y(function(d) { return y(d.Ratio); });
