@@ -102,7 +102,7 @@
     d.USA_TotKTon = +d.USA_TotKTon;
  });
 
-var margin = 100;
+var margin = 120;
 var right_margin = 150;
 var width = 600;
 var height = 400;
@@ -144,18 +144,24 @@ function chart1() {
   x.domain([minYear, maxYear]);
   y.domain([minY, maxY]);
   
-  d3.select("svg").append('g')
+    d3.select("svg").append('g')
     .attr("transform", "translate("+margin + "," + (height + margin) + ")")
     .call(d3.axisBottom(x)
        //     .tickValues([10,20,50,100])
            .tickFormat(d3.format("d"))
        );
 
+ // text label for the x axis
+ d3.select("svg").append("text")             
+      .attr("transform",
+            "translate(" + ((width + margin + right_margin)/2) + " ," + 
+                           (height + margin + 50) + ")")
+      .style("text-anchor", "middle")
+      .text("Year");
+
   d3.select("svg").append('g')
     .attr("transform", "translate("+margin + "," + margin + ")")
     .call(d3.axisLeft(y)
-            //.tickValues([10,20,50,100])
-           // .tickFormat(d3.format("~s"))
             );
 
 var ChinaLine = d3.line()
