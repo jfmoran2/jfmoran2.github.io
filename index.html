@@ -79,6 +79,9 @@
   <a href="#" data-toggle="tooltip" title="Load Last Chart">
       <button type="button" class="btn btn-primary" id="chart3"> Chart3 </button>
   </a>
+  <a href="#" data-toggle="tooltip" title="More Information">
+      <button type="button" class="btn btn-primary" id="chart1-more-info"> More Info </button>
+  </a>
 </div>
 
 </div>
@@ -491,12 +494,25 @@ function reload_chart3() {
   chart3();
 }
 
+function display_more_chart1() {
+  console.log("go fuck yourself")
+  var text1 = "This is a long message\n this is the next line\n and here is more" +
+  " another really long message but where do you stop?" + 
+  " I don't know\n" +
+  "but this is a really shity way to do things\n" +
+  " but what the fuck am I supposed to do?  fucking rewrite tableau?";
+  
+  alert(text1);
+}
+
 // START MAIN EXECUTION BRANCH ALL FUNCTIONS DEFINED ABOVE
 chart1();
 
 d3.select("#chart1").on("click", reload_chart1);
 d3.select("#chart2").on("click", reload_chart2);
 d3.select("#chart3").on("click", reload_chart3);
+
+d3.select("#chart1-more-info").on("click", display_more_chart1);
 
 });
 // }
