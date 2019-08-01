@@ -116,7 +116,7 @@
 
 var margin = 120;
 var right_margin = 175;
-var width = 600;
+var width = 650;
 var height = 400;
   
 var x = d3.scaleLinear().range([0,width]);
@@ -225,7 +225,7 @@ function chart1() {
   
   d3.select("svg").append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin + right_margin)
+      .attr("y", 0 - margin + right_margin - 25)
       .attr("x",0 - (height + margin)/2 - 50)
       .attr("dy", "1em")
       .style("text-anchor", "middle")
@@ -443,7 +443,7 @@ function chart2() {
   
   d3.select("svg").append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin + right_margin)
+      .attr("y", 0 - margin + right_margin - 25)
       .attr("x",0 - (height + margin)/2 - 50)
       .attr("dy", "1em")
       .style("text-anchor", "middle")
@@ -637,7 +637,7 @@ d3.select("svg").append("text")
 
     d3.select("svg").append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin + right_margin)
+      .attr("y", 0 - margin + right_margin - 25)
       .attr("x",0 - (height + margin)/2 - 50)
       .attr("dy", "1em")
       .style("text-anchor", "middle")
