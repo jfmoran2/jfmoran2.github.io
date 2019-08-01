@@ -34,7 +34,27 @@
 				width:100%;
 				height:30px;
 			}
-    
+
+      .overlay {
+        fill: none;
+        pointer-events: all;
+    }
+      .tooltip {
+        fill: white;
+        stroke: #000;
+    }
+
+    .focus circle {
+        fill: black;
+    }
+
+    .focus text {
+        font-size: 14px;
+    }
+
+    .tooltip-year, .tooltip-data {
+        font-weight: bold;
+    }
 
 </style>
 <head>
@@ -84,9 +104,9 @@
     d.USA_TotKTon = +d.USA_TotKTon;
  });
 
-var margin = 100;
-var width = 700;
-var height = 500;
+var margin = 125;
+var width = 600;
+var height = 400;
   
 var x = d3.scaleLinear().range([0,width]);
 var y = d3.scaleLinear().range([height,0]);
@@ -150,6 +170,62 @@ var path2 = svg.append("path")
       .attr("class", "line")
       .attr("d", USALine);
 
+  // TOOLTIPS CODE
+  var bisectYear = d3.bisector(function(d) { return d.Year; }).left;
+  var formatData = d3.format(",.0f");
+  var formatYear = d3.format("d");
+
+  var focus = svg.append("g")
+            .attr("class", "focus")
+            .style("display", "none");
+
+        focus.append("circle")
+            .attr("r", 5);
+
+        focus.append("rect")
+            .attr("class", "tooltip")
+            .attr("width", 100)
+            .attr("height", 50)
+            .attr("x", 10)
+            .attr("y", -22)
+            .attr("rx", 4)
+            .attr("ry", 4);
+
+        focus.append("text")
+            .attr("class", "tooltip-year")
+            .attr("x", 18)
+            .attr("y", -2);
+
+        focus.append("text")
+            .attr("x", 18)
+            .attr("y", 18)
+            .text("K-ton:");
+
+        focus.append("text")
+            .attr("class", "tooltip-data")
+            .attr("x", 60)
+            .attr("y", 18);
+        
+        svg.append("rect")
+            .attr("class", "overlay")
+            .attr("width", width)
+            .attr("height", height)
+            .on("mouseover", function() { focus.style("display", null); })
+            .on("mouseout", function() { focus.style("display", "none"); })
+            .on("mousemove", mousemove);
+
+        function mousemove() {
+            var x0 = x.invert(d3.mouse(this)[0]),
+                i = bisectYear(data, x0, 1),
+                d0 = data[i - 1],
+                d1 = data[i],
+                d = x0 - d0.date > d1.Year - x0 ? d1 : d0;
+            focus.attr("transform", "translate(" + x(d.Year) + "," + y(d.USA_TotKTon) + ")");
+            focus.select(".tooltip-year").text(formatYear(d.Year));
+            focus.select(".tooltip-data").text(formatData(d.USA_TotKTon));
+        }
+
+// ANIMATION
 var totalLength1 = path1.node().getTotalLength();
 
 path1.attr("stroke-dasharray", totalLength1 + " " + totalLength1)
@@ -167,6 +243,7 @@ path2.attr("stroke-dasharray", totalLength2 + " " + totalLength2)
     .duration(delayMS)
     .ease(d3.easeLinear)
     .attr("stroke-dashoffset", 0);
+  
 }
 
 function chart2() {
