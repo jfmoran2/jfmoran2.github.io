@@ -229,7 +229,7 @@ function chart1() {
       .attr("x",0 - (height + margin)/2 - 50)
       .attr("dy", "1em")
       .style("text-anchor", "middle")
-      .text("CO2 Total Emissions (kt)");      
+      .text("CO2 Total Emissions (kt)");         
 
 var ChinaLine = d3.line()
     .x(function(d) { return x(d.Year); })
@@ -372,7 +372,7 @@ function chart2() {
         .attr("text-anchor", "middle")  
         .style("font-size", "16px") 
         .style("font-weight", "bold")  
-        .text("CO2 Total Emissions in Kilotons (kt) China v. USA (1960-2011)");
+        .text("CO2 Per Capita Emissions in Metric tons (t) China v. USA (1960-2011)");
 
 
   svg.append("rect")
@@ -447,7 +447,7 @@ function chart2() {
       .attr("x",0 - (height + margin)/2 - 50)
       .attr("dy", "1em")
       .style("text-anchor", "middle")
-      .text("CO2 Total Emissions (kt)");      
+      .text("CO2 Per Capita Emissions (t)"); 
 
 var ChinaLine = d3.line()
     .x(function(d) { return x(d.Year); })
