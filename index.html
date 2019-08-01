@@ -39,9 +39,10 @@
         fill: none;
         pointer-events: all;
     }
-      .tooltip {
-        fill: white;
-        stroke: #000;
+      .tooltip_data {
+        fill: lightgray;
+        stroke: black;
+        opacity: 0.1;
     }
 
     .focus circle {
@@ -50,10 +51,6 @@
 
     .focus text {
         font-size: 14px;
-    }
-
-    .tooltip-year, .tooltip-data {
-        font-weight: bold;
     }
 
 </style>
@@ -174,36 +171,41 @@ var path2 = svg.append("path")
   var bisectYear = d3.bisector(function(d) { return d.Year; }).left;
   var formatData = d3.format(",.0f");
   var formatYear = d3.format("d");
-
+  
   var focus = svg.append("g")
             .attr("class", "focus")
             .style("display", "none");
 
         focus.append("circle")
-            .attr("r", 5);
+            .attr("r", 3);
 
         focus.append("rect")
-            .attr("class", "tooltip")
-            .attr("width", 100)
+            .attr("class", "tooltip_data")
+            .attr("width", 115)
             .attr("height", 50)
             .attr("x", 10)
             .attr("y", -22)
-            .attr("rx", 4)
-            .attr("ry", 4);
-
+            .attr("rx", 5)
+            .attr("ry", 5);
+      
+        focus.append("text")
+            .attr("x", 18)
+            .attr("y", -2)
+            .text("year: ");
+      
         focus.append("text")
             .attr("class", "tooltip-year")
-            .attr("x", 18)
+            .attr("x", 55)
             .attr("y", -2);
 
         focus.append("text")
             .attr("x", 18)
             .attr("y", 18)
-            .text("K-ton:");
+            .text("kt  :");
 
         focus.append("text")
             .attr("class", "tooltip-data")
-            .attr("x", 60)
+            .attr("x", 55)
             .attr("y", 18);
         
         svg.append("rect")
