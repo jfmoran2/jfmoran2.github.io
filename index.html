@@ -75,15 +75,15 @@
 <div class="gap-30"></div>
 <div id="viz">
   
-  <a href="#" data-toggle="tooltip" title="Load Initial Chart">
-      <button type="button" class="btn btn-primary" id="chart1"> Scene 1 </button>
+  <a href="#" data-toggle="tooltip" title="Display First Chart">
+      <button type="button" class="btn btn-primary" id="chart1"> Chart 1 </button>
   </a>
 
-  <a href="#" data-toggle="tooltip" title="Load Second Chart">
-      <button type="button" class="btn btn-primary" id="chart2"> Scene 2 </button>
+  <a href="#" data-toggle="tooltip" title="Display Second Chart">
+      <button type="button" class="btn btn-primary" id="chart2"> Chart 2 </button>
   </a>
-  <a href="#" data-toggle="tooltip" title="Load Last Chart">
-      <button type="button" class="btn btn-primary" id="chart3"> Scene 3 </button>
+  <a href="#" data-toggle="tooltip" title="Display Last Chart">
+      <button type="button" class="btn btn-primary" id="chart3"> Chart 3 </button>
   </a>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
@@ -115,7 +115,7 @@
  });
 
 var margin = 120;
-var right_margin = 150;
+var right_margin = 175;
 var width = 600;
 var height = 400;
   
@@ -128,8 +128,8 @@ var svg;
 var chartNumber = 1;
 
 // Global LEGEND
-var xlegend = width - 25;
-var ylegend = -75;
+var xlegend = width/2;
+var ylegend = -50;
 
 function chart1() {
 
@@ -326,7 +326,7 @@ var path2 = svg.append("path")
                 i = bisectYear(data, x0, 1),
                 d0 = data[i - 1],
                 d1 = data[i],
-                d = x0 - d0.date > d1.Year - x0 ? d1 : d0;
+                d = x0 - d0.Year > d1.Year - x0 ? d1 : d0;
             // focus.attr("transform", "translate(" + x(d.Year) + "," + y(d.USA_TotKTon) + ")");
             focus.attr("transform", "translate(" + x(d.Year) + "," + 0 + ")");
             focus.select(".tooltip-year").text(formatYear(d.Year));
@@ -483,7 +483,7 @@ var bisectYear = d3.bisector(function(d) { return d.Year; }).left;
 
         focus.append("rect")
             .attr("class", "tooltip-style1")
-            .attr("width", 150)
+            .attr("width", 130)
             .attr("height", 72)
             .attr("x", 10)
             .attr("y", -22)
@@ -544,7 +544,7 @@ var bisectYear = d3.bisector(function(d) { return d.Year; }).left;
                 i = bisectYear(data, x0, 1),
                 d0 = data[i - 1],
                 d1 = data[i],
-                d = x0 - d0.date > d1.Year - x0 ? d1 : d0;
+                d = x0 - d0.Year > d1.Year - x0 ? d1 : d0;
             // focus.attr("transform", "translate(" + x(d.Year) + "," + y(d.USA_TotKTon) + ")");
             focus.attr("transform", "translate(" + x(d.Year) + "," + 0 + ")");
             focus.select(".tooltip-year").text(formatYear(d.Year));
@@ -576,10 +576,11 @@ function chart3() {
 
   chartNumber = 3;
   svg = d3.select("body").append("svg")
-    .attr("width", width + 2*margin)
+    .attr("width", width + margin + right_margin)
     .attr("height", height + 2*margin)
     .append("g")
     .attr("transform", "translate("+ margin + "," + margin + ")");
+
  // TITLE
  svg.append("text")
         .attr("x", (width / 2))             
@@ -651,6 +652,78 @@ d3.select("svg").append("text")
       .attr("class", "line")
       .attr("d", RatioLine)
       .style("stroke", "green");
+
+// TOOLTIPS CODE
+var bisectYear = d3.bisector(function(d) { return d.Year; }).left;
+  var formatData = d3.format(",.2f");
+  var formatYear = d3.format("d");
+  
+  var focus = svg.append("g")
+            .attr("class", "focus")
+            .style("display", "none");
+
+       // focus.append("circle")
+       //     .attr("r", 3);
+
+        focus.append("rect")
+            .attr("class", "tooltip-style1")
+            .attr("width", 130)
+            .attr("height", 52)
+            .attr("x", 10)
+            .attr("y", -22)
+            .attr("rx", 5)
+            .attr("ry", 5);
+      
+        focus.append("text")
+            .attr("x", 18)
+            .attr("y", -2)
+            .text("Year: ");
+      
+        focus.append("text")
+            .attr("class", "tooltip-year")
+            .attr("x", 88)
+            .attr("y", -2);
+
+        focus.append("text")
+            .attr("x", 18)
+            .attr("y", 18)
+            .style("stroke","green")
+            .text("Ratio:");
+
+        focus.append("text")
+            .attr("class", "tooltip-ratio-data")
+            .attr("x", 88)
+            .attr("y", 18);
+        
+        focus.append("line")
+          .attr("class", "tooltip-line")
+          .style("stroke-dasharray", ("3, 3")) 
+          .attr('stroke', 'black')
+          .attr('x1', 0)
+          .attr('x2', 0)
+          .attr('y1', 0)
+          .attr('y2', height);
+
+        svg.append("rect")
+            .attr("class", "overlay")
+            .attr("width", width)
+            .attr("height", height)
+            .on("mouseover", function() { focus.style("display", null); })
+            .on("mouseout", function() { focus.style("display", "none"); })
+            .on("mousemove", mousemove);
+
+        function mousemove() {
+            var x0 = x.invert(d3.mouse(this)[0]),
+                i = bisectYear(PerCapitaRatio, x0, 1),
+                d0 = PerCapitaRatio[i - 1],
+                d1 = PerCapitaRatio[i],
+                d = x0 - d0.Year > d1.Year - x0 ? d1 : d0;
+            // focus.attr("transform", "translate(" + x(d.Year) + "," + y(d.USA_TotKTon) + ")");
+            focus.attr("transform", "translate(" + x(d.Year) + "," + 0 + ")");
+            focus.select(".tooltip-year").text(formatYear(d.Year));
+            focus.select(".tooltip-ratio-data").text(formatData(d.Ratio));
+  
+        }
 
     var totalLength1 = path1.node().getTotalLength();
 
