@@ -180,8 +180,8 @@ var path2 = svg.append("path")
             .attr("class", "focus")
             .style("display", "none");
 
-        focus.append("circle")
-            .attr("r", 3);
+       // focus.append("circle")
+       //     .attr("r", 3);
 
         focus.append("rect")
             .attr("class", "tooltip-style1")
@@ -212,6 +212,15 @@ var path2 = svg.append("path")
             .attr("x", 55)
             .attr("y", 18);
         
+        focus.append("line")
+          .attr("class", "tooltip-line")
+          .style("stroke-dasharray", ("3, 3")) 
+          .attr('stroke', 'black')
+          .attr('x1', 0)
+          .attr('x2', 0)
+          .attr('y1', 0)
+          .attr('y2', height);
+
         svg.append("rect")
             .attr("class", "overlay")
             .attr("width", width)
@@ -226,7 +235,8 @@ var path2 = svg.append("path")
                 d0 = data[i - 1],
                 d1 = data[i],
                 d = x0 - d0.date > d1.Year - x0 ? d1 : d0;
-            focus.attr("transform", "translate(" + x(d.Year) + "," + y(d.USA_TotKTon) + ")");
+            // focus.attr("transform", "translate(" + x(d.Year) + "," + y(d.USA_TotKTon) + ")");
+            focus.attr("transform", "translate(" + x(d.Year) + "," + 0 + ")");
             focus.select(".tooltip-year").text(formatYear(d.Year));
             focus.select(".tooltip-data").text(formatData(d.USA_TotKTon));
         }
